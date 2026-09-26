@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.com.meugiga.app.domain.model.PeriodPreset
+import br.com.meugiga.app.domain.model.coveredCalendarDays
 import br.com.meugiga.app.ui.components.MobileOnlyBadge
 import br.com.meugiga.app.ui.components.CompactMetric
 import br.com.meugiga.app.ui.components.CompactMetricsGrid
@@ -35,7 +36,6 @@ import br.com.meugiga.app.ui.components.intervalChartPoints
 import br.com.meugiga.app.utils.ByteFormatter
 import br.com.meugiga.app.viewmodel.MainUiState
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 @Composable
 fun HistoryScreen(
@@ -54,13 +54,7 @@ fun HistoryScreen(
             dailyChartPoints(report?.timeline.orEmpty())
         }
     }
-    val dayCount = report?.period?.let {
-        val durationDays = ChronoUnit.DAYS.between(
-            java.time.Instant.ofEpochMilli(it.startMillis).atZone(java.time.ZoneId.systemDefault()).toLocalDate(),
-            java.time.Instant.ofEpochMilli(it.endMillis).atZone(java.time.ZoneId.systemDefault()).toLocalDate(),
-        ).toInt() + 1
-        durationDays.coerceAtLeast(1)
-    } ?: 1
+    val dayCount = report?.period?.coveredCalendarDays() ?: 1
 
     LazyColumn(
         modifier = modifier,

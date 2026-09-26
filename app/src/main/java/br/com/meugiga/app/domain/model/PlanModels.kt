@@ -32,6 +32,7 @@ data class AppSettings(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val lastAlertCycleKey: String? = null,
     val sentAlertThresholds: Set<Int> = emptySet(),
+    val lastSeenWhatsNewVersionCode: Int = 0,
 )
 
 data class BillingCycle(

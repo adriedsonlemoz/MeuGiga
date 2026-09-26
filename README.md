@@ -4,15 +4,17 @@
 
 MeuGiga é um aplicativo Android nativo que acompanha exclusivamente o consumo de **dados móveis**. Não monitora Wi‑Fi, não usa VPN, não bloqueia internet, não limpa o aparelho e não inclui publicidade ou rastreamento.
 
-## Estado da versão 0.1.1
+## Estado da versão 0.1.3
 
 - resumo compacto do ciclo atual com datas de início e fim;
 - franquia limitada ou plano sem limite definido;
 - total, restante, percentual, dias restantes, média diária, disponível por dia e previsão;
 - download e upload separados;
 - ranking por aplicativo, distinguindo apps removidos, tethering e sistema;
+- busca de aplicativos por nome ou identificador de pacote;
 - detalhes por aplicativo com histórico e intervalos fornecidos pelo Android;
 - filtros Hoje, Ontem, 7 dias, 30 dias, Ciclo e Personalizado;
+- média diária calculada pelos dias efetivamente cobertos pelo período, sem duplicar o dia final;
 - cache e histórico local em Room;
 - atualização em primeiro plano a cada 60 segundos;
 - atualização periódica com WorkManager em 15, 30 ou 60 minutos;
@@ -20,6 +22,7 @@ MeuGiga é um aplicativo Android nativo que acompanha exclusivamente o consumo d
 - tema claro, escuro ou seguindo o sistema;
 - início do primeiro ciclo configurável, seguido da renovação recorrente;
 - onboarding de três etapas;
+- tela de novidades exibida uma vez após cada atualização instalada;
 - nenhum cadastro, login ou servidor.
 
 ## Tecnologias
@@ -74,6 +77,7 @@ O Android reúne o histórico em buckets discretos. Esses buckets normalmente t�
 - atualiza totais com mais frequência do que o histórico detalhado;
 - salva por `UID + início + fim`, substituindo o mesmo bucket em vez de duplicá-lo;
 - mantém até 120 dias de dados locais;
+- preserva o último cache válido quando o Android não entrega uma consulta de estatísticas;
 - classifica os UIDs especiais de agregação, aplicativos removidos e tethering sem atribuí-los incorretamente ao Sistema Android.
 
 Mais detalhes em [docs/NETWORK_STATS.md](docs/NETWORK_STATS.md).

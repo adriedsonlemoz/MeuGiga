@@ -11,12 +11,12 @@ Ele:
 3. executa testes e lint de release;
 4. gera `app-release.apk` assinado;
 5. valida a assinatura com `apksigner`;
-6. envia um artifact de backup chamado `MeuGiga-0.1.1-release-signed-apk`;
+6. envia um artifact de backup chamado `MeuGiga-0.1.3-release-signed-apk`;
 7. publica o APK diretamente em **GitHub Releases**, na versão de teste `meugiga-latest-build`.
 
 Arquivo final:
 
-`MeuGiga-0.1.1-release-signed.apk`
+`MeuGiga-0.1.3-release-signed.apk`
 
 ## Secrets obrigatórios
 

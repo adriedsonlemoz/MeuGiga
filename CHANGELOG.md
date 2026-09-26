@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.3 — 26/09/2026
+
+- corrigida a média diária do Histórico para considerar somente os dias efetivamente cobertos pelo intervalo;
+- “Ontem” deixa de ser contado incorretamente como dois dias;
+- períodos personalizados encerrados à meia-noite deixam de ganhar um dia extra no divisor da média;
+- cálculo movido para a camada de domínio e coberto por testes de regressão;
+- versão e documentação sincronizadas para 0.1.3 / versionCode 4.
+
+## 0.1.2 — 26/09/2026
+
+- busca na tela Aplicativos por nome visível ou nome de pacote;
+- botão para limpar a busca e mensagem específica quando nenhum aplicativo corresponde ao filtro;
+- nova tela “Novidades da atualização”, exibida uma única vez após uma atualização real do app;
+- controle das novidades por `versionCode`, preparado para versões futuras;
+- correção na leitura do `NetworkStatsManager`: respostas nulas agora são tratadas como estatísticas indisponíveis e não sobrescrevem o cache com consumo zerado;
+- versão e documentação sincronizadas para 0.1.2 / versionCode 3.
+
 ## 0.1.1 — 26/08/2026
 
 - indicadores compactos em três colunas no resumo, aplicativos, histórico e detalhes;

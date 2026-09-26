@@ -73,7 +73,7 @@ class AndroidNetworkStatsReader(
             null,
             period.startMillis,
             period.endMillis,
-        ) ?: return emptyList()
+        ) ?: throw NetworkStatisticsUnavailableException()
         stats.use {
             val bucket = NetworkStats.Bucket()
             while (it.hasNextBucket()) {
@@ -95,7 +95,7 @@ class AndroidNetworkStatsReader(
             null,
             period.startMillis,
             period.endMillis,
-        ) ?: return emptyList()
+        ) ?: throw NetworkStatisticsUnavailableException()
         stats.use {
             val bucket = NetworkStats.Bucket()
             while (it.hasNextBucket()) {

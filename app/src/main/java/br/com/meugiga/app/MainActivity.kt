@@ -18,10 +18,13 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.meugiga.app.ui.MeugigaApp
 import br.com.meugiga.app.ui.screens.OnboardingScreen
+import br.com.meugiga.app.ui.screens.WhatsNewScreen
 import br.com.meugiga.app.ui.theme.MeugigaTheme
 import br.com.meugiga.app.viewmodel.MainViewModel
 
 class MainActivity : ComponentActivity() {
+    private val updatedInstall: Boolean by lazy(::detectUpdatedInstall)
+
     private val mainViewModel: MainViewModel by viewModels {
         MainViewModel.factory((application as MeugigaApplication).container)
     }
@@ -44,6 +47,13 @@ class MainActivity : ComponentActivity() {
                             onOpenUsageAccess = ::openUsageAccessSettings,
                             onFinish = mainViewModel::finishOnboarding,
                         )
+                        updatedInstall &&
+                            state.settings.lastSeenWhatsNewVersionCode < BuildConfig.VERSION_CODE ->
+                            WhatsNewScreen(
+                                onContinue = {
+                                    mainViewModel.markWhatsNewSeen(BuildConfig.VERSION_CODE)
+                                },
+                            )
                         else -> MeugigaApp(
                             state = state,
                             onGrantUsageAccess = ::openUsageAccessSettings,
@@ -72,6 +82,12 @@ class MainActivity : ComponentActivity() {
         mainViewModel.stopForegroundUpdates()
         super.onStop()
     }
+
+    @Suppress("DEPRECATION")
+    private fun detectUpdatedInstall(): Boolean = runCatching {
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
+        packageInfo.lastUpdateTime > packageInfo.firstInstallTime
+    }.getOrDefault(false)
 
     private fun openUsageAccessSettings() {
         runCatching { startActivity(mainViewModel.usageAccessSettingsIntent()) }

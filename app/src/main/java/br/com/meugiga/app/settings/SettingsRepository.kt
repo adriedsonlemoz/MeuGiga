@@ -74,6 +74,16 @@ class SettingsRepository(context: Context) {
         dataStore.edit { it[Keys.THEME] = mode.name }
     }
 
+    suspend fun markWhatsNewSeen(versionCode: Int) {
+        require(versionCode > 0)
+        dataStore.edit { preferences ->
+            val previous = preferences[Keys.LAST_SEEN_WHATS_NEW_VERSION_CODE] ?: 0
+            if (versionCode > previous) {
+                preferences[Keys.LAST_SEEN_WHATS_NEW_VERSION_CODE] = versionCode
+            }
+        }
+    }
+
     suspend fun prepareAlertCycle(cycleKey: String): AppSettings {
         dataStore.edit { preferences ->
             if (preferences[Keys.LAST_ALERT_CYCLE] != cycleKey) {
@@ -117,6 +127,7 @@ class SettingsRepository(context: Context) {
             }.getOrDefault(ThemeMode.SYSTEM),
             lastAlertCycleKey = preferences[Keys.LAST_ALERT_CYCLE],
             sentAlertThresholds = parseThresholds(preferences[Keys.SENT_THRESHOLDS]),
+            lastSeenWhatsNewVersionCode = preferences[Keys.LAST_SEEN_WHATS_NEW_VERSION_CODE] ?: 0,
         )
     }
 
@@ -140,5 +151,6 @@ class SettingsRepository(context: Context) {
         val THEME = stringPreferencesKey("theme")
         val LAST_ALERT_CYCLE = stringPreferencesKey("last_alert_cycle")
         val SENT_THRESHOLDS = stringPreferencesKey("sent_alert_thresholds")
+        val LAST_SEEN_WHATS_NEW_VERSION_CODE = intPreferencesKey("last_seen_whats_new_version_code")
     }
 }

@@ -158,6 +158,21 @@ class MainViewModel(
         viewModelScope.launch { container.settingsRepository.setTheme(mode) }
     }
 
+    fun markWhatsNewSeen(versionCode: Int) {
+        if (versionCode <= 0) return
+        _state.update { current ->
+            current.copy(
+                settings = current.settings.copy(
+                    lastSeenWhatsNewVersionCode = maxOf(
+                        current.settings.lastSeenWhatsNewVersionCode,
+                        versionCode,
+                    ),
+                ),
+            )
+        }
+        viewModelScope.launch { container.settingsRepository.markWhatsNewSeen(versionCode) }
+    }
+
     private suspend fun refreshInternal(forceDetails: Boolean) = refreshMutex.withLock {
         val current = _state.value
         val settings = current.settings

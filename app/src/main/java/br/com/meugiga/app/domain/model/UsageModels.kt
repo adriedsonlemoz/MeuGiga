@@ -1,5 +1,9 @@
 package br.com.meugiga.app.domain.model
 
+import java.time.Instant
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
+
 data class UsagePeriod(
     val startMillis: Long,
     val endMillis: Long,
@@ -9,6 +13,21 @@ data class UsagePeriod(
     init {
         require(endMillis >= startMillis) { "O fim do período deve ser posterior ao início." }
     }
+}
+
+fun UsagePeriod.coveredCalendarDays(zoneId: ZoneId = ZoneId.systemDefault()): Int {
+    if (endMillis <= startMillis) return 1
+
+    val startDate = Instant.ofEpochMilli(startMillis)
+        .atZone(zoneId)
+        .toLocalDate()
+    val lastIncludedDate = Instant.ofEpochMilli(endMillis - 1L)
+        .atZone(zoneId)
+        .toLocalDate()
+
+    return (ChronoUnit.DAYS.between(startDate, lastIncludedDate) + 1L)
+        .coerceAtLeast(1L)
+        .toInt()
 }
 
 enum class PeriodPreset {
